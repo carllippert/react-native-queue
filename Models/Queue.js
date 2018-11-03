@@ -393,6 +393,35 @@ export class Queue {
     }
 
   }
+  
+   /**
+   *
+   * Set all jobs status to active
+   */
+    async resetActiveStatus() {
+
+      let jobs = [];
+
+      try {
+
+        jobs = await this.getJobs(true);
+
+        jobs.map((job) => {
+
+          // const jobName = job.name;
+          // const jobId = job.id;
+          // const jobPayload = JSON.parse(job.payload);
+
+            this.realm.write(() => {
+              job.active = false; 
+            });
+        });
+
+
+      } catch (error) {
+        //debugger;
+      }
+    }
 
   /**
    *
