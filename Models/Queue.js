@@ -393,35 +393,30 @@ export class Queue {
     }
 
   }
-  
-   /**
+  /**
    *
-   * Set all jobs status to active
+   * Reset Jobs in Queue to active status
+   *
+   *
+   * @return {promise} - Promise that resolves to a collection of all the jobs in the queue.
    */
     async resetActiveStatus() {
 
-      let jobs = [];
-
-      try {
+        let jobs = [];
+        let newJobs = [];
 
         jobs = await this.getJobs(true);
 
-        jobs.map((job) => {
+        this.realm.write(() => {
 
-          // const jobName = job.name;
-          // const jobId = job.id;
-          // const jobPayload = JSON.parse(job.payload);
+          newJobs = jobs.map((job) => {
 
-            this.realm.write(() => {
               job.active = false; 
-            });
         });
+    });
 
-
-      } catch (error) {
-        //debugger;
-      }
-    }
+    return newJobs;
+  }
 
   /**
    *
